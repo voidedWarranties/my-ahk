@@ -154,6 +154,7 @@ isCtrlDown =
 isAltDown =
 isWinDown =
 isShiftDown =
+isF24Down =
 
 lastdowntime := A_Now
 
@@ -192,6 +193,10 @@ Loop, %keyarray0% {
 	; Win
 	IniRead, keyfuncwinapp, keysglobal.ini, %inisect%, win
 	keyfuncwinlist = %keyfuncwinlist%%keyfuncwinapp%`n
+	
+	; F24
+	IniRead, keyfuncf24app, keysglobal.ini, %inisect%, f24
+	keyfuncf24list = %keyfuncf24list%%keyfuncf24app%`n
 }
 
 FormatFuncString(keyfunclist, "keyfunc")
@@ -199,6 +204,7 @@ FormatFuncString(keyfuncctrllist, "keyfuncctrl")
 FormatFuncString(keyfuncaltlist, "keyfuncalt")
 FormatFuncString(keyfuncshiftlist, "keyfuncshift")
 FormatFuncString(keyfuncwinlist, "keyfuncwin")
+FormatFuncString(keyfuncf24list, "keyfuncf24")
 
 Loop {
 	Sleep, 20
@@ -212,7 +218,8 @@ Loop {
 			isAltDownNow := key = "Alt"
 			isWinDownNow := key = "LWin" || key = "RWin"
 			isShiftDownNow := key = "Shift"
-			isModifierDownNow := isCtrlDownNow or isAltDownNow or isWinDownNow or isShiftDownNow
+			isF24DownNow := key = "F24"
+			isModifierDownNow := isCtrlDownNow or isAltDownNow or isWinDownNow or isShiftDownNow or isF24DownNow
 			
 			If isCtrlDownNow
 				isCtrlDown = 1
@@ -222,6 +229,8 @@ Loop {
 				isWinDown = 1
 			If isShiftDownNow
 				isShiftDown = 1
+			If isF24DownNow
+				isF24Down = 1
 			
 			If isModifierDownNow
 				Continue
@@ -267,6 +276,11 @@ Loop {
 					key := "Ctrl + " + key
 					keyfunction := keyfuncctrl%A_Index%
 				}
+				If isF24Down
+				{
+					key := "[Dell] " + key
+					keyfunction := keyfuncf24%A_Index%
+				}
 				DisplayText(key, keyfunction)
 			}
 			SetTransparency(255)
@@ -281,6 +295,7 @@ Loop {
 			isAltUpNow := key = "Alt"
 			isWinUpNow := key = "LWin" or key = "RWin"
 			isShiftUpNow := key = "Shift"
+			isF24UpNow := key = "F24"
 			
 			If isCtrlUpNow
 				isCtrlDown = 0
@@ -290,17 +305,14 @@ Loop {
 				isWinDown = 0
 			If isShiftUpNow
 				isShiftDown = 0
+			If isF24UpNow
+				isF24Down = 0
 		}
 	}
 	timenow := A_Now
 	EnvSub, timenow, lastdowntime, seconds
 	If(timenow > 1) {
-		transparencytop = 120
-		transparencyrange := transparencytop - 50
-		Loop, %transparencyrange% { ; Fancy fade effects wooo
-			Sleep, 1
-			SetTransparency(transparencytop - A_Index)
-		}
+		SetTransparency(50)
 		lastdowntime = 0
 	}
 }
@@ -311,10 +323,4 @@ return
 
 TransparentALittle:
 	SetTransparency(150)
-return
-
-Browser_Back::
-return
-
-Browser_Forward::
 return

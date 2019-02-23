@@ -47,8 +47,10 @@ Tippy("Pinyin " + onoff)
 return
 Launch_App2::Tippy("test", 5000)
 
-^Home::SwitchVar(currentChromeProfile, nextChromeProfile, chromeProfiles, "currentChromeProfile", "nextChromeProfile")
-+Home::ChromeOpen("")
+~^Numpad7::SwitchVar(currentChromeProfile, nextChromeProfile, chromeProfiles, "currentChromeProfile", "nextChromeProfile")
+~#Numpad7::ChromeOpen("")
+NumLock::
+return
 
 #If pinyin = 1
 :*:v0::ü

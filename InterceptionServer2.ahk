@@ -8,6 +8,8 @@ SetWorkingDir %A_ScriptDir%
 CoordMode, Mouse, Screen
 Menu, Tray, Icon, shell32.dll, 69
 
+SendLevel, 1
+
 paths := {}
 paths["/"] := Func("HandleIncoming")
 
@@ -132,7 +134,7 @@ hotswitch(device, case) {
 	
 	2:
 	If (case = "P/I/N/G") {
-		MsgBox, Pong!
+		msgbox, Pong!
 	}
 	If (case = "I/3") {
 		SendRaw, ǐ
@@ -324,6 +326,13 @@ switch(case) {
 	
 	1_1c:
 		TempTooltip("test")
+	return
+	
+	1_2c:
+		key = A
+		Send, {F24 down}
+		Send, {%key%}
+		Send, {F24 up}
 	return
 	
 	default:
