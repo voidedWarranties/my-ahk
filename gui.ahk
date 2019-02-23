@@ -145,11 +145,60 @@ DisplayTextBottom(line2) {
 	WinActivate ahk_id %winid%
 }
 
+; Keyboard stuff begins here
+
 keyarray =
 lastdown =
+
+isCtrlDown =
+isAltDown =
+isWinDown =
+isShiftDown =
+
 lastdowntime := A_Now
-test = Browser_Back`nBrowser_Forward
-StringSplit, keyarray, test, `n
+
+FormatFuncString(funclistIn, varname) {
+	global
+	funclistIn := "`n`n`n`n`n" + funclistIn
+	StringTrimRight, funclistIn, funclistIn, 1
+	StringSplit, %varname%, funclistIn, `n
+}
+
+IniRead, keylist, keysglobal.ini
+keylist := "Ctrl`nAlt`nLWin`nRWin`nShift`n" + keylist
+StringSplit, keyarray, keylist, `n
+
+Loop, %keyarray0% {
+	inisect := keyarray%A_Index%
+	If (inisect = "Ctrl" || inisect = "Alt" || inisect = "LWin" || inisect = "RWin" || inisect = "Shift")
+		Continue
+	
+	; Normal
+	IniRead, keyfuncapp, keysglobal.ini, %inisect%, func
+	keyfunclist = %keyfunclist%%keyfuncapp%`n
+	
+	; Ctrl
+	IniRead, keyfuncctrlapp, keysglobal.ini, %inisect%, ctrl
+	keyfuncctrllist = %keyfuncctrllist%%keyfuncctrlapp%`n
+	
+	; Alt
+	IniRead, keyfuncaltapp, keysglobal.ini, %inisect%, alt
+	keyfuncaltlist = %keyfuncaltlist%%keyfuncaltapp%`n
+	
+	; Shift
+	IniRead, keyfuncshiftapp, keysglobal.ini, %inisect%, shift
+	keyfuncshiftlist = %keyfuncshiftlist%%keyfuncshiftapp%`n
+	
+	; Win
+	IniRead, keyfuncwinapp, keysglobal.ini, %inisect%, win
+	keyfuncwinlist = %keyfuncwinlist%%keyfuncwinapp%`n
+}
+
+FormatFuncString(keyfunclist, "keyfunc")
+FormatFuncString(keyfuncctrllist, "keyfuncctrl")
+FormatFuncString(keyfuncaltlist, "keyfuncalt")
+FormatFuncString(keyfuncshiftlist, "keyfuncshift")
+FormatFuncString(keyfuncwinlist, "keyfuncwin")
 
 Loop {
 	Sleep, 20
@@ -159,10 +208,66 @@ Loop {
 		repeat := lastdown = key
 		If state = D
 		{
+			isCtrlDownNow := key = "Ctrl"
+			isAltDownNow := key = "Alt"
+			isWinDownNow := key = "LWin" || key = "RWin"
+			isShiftDownNow := key = "Shift"
+			isModifierDownNow := isCtrlDownNow or isAltDownNow or isWinDownNow or isShiftDownNow
+			
+			If isCtrlDownNow
+				isCtrlDown = 1
+			If isAltDownNow
+				isAltDown = 1
+			If isWinDownNow
+				isWinDown = 1
+			If isShiftDownNow
+				isShiftDown = 1
+			
+			If isModifierDownNow
+				Continue
+			
 			If repeat = 0
 			{
-				DisplayText(key, key)
+				;ctrl alt
+				;ctrl shift
+				;ctrl win
+				
+				;alt shift
+				;alt win
+				
+				;shift win
+				
+				;ctrl alt shift
+				;ctrl alt win
+				
+				;ctrl shift win
+				
+				;alt shift win
+				
+				;ctrl alt shift win
 				lastdown := key
+				keyfunction := keyfunc%A_Index%
+				If isWinDown
+				{
+					key := "Win + " + key
+					keyfunction := keyfuncwin%A_Index%
+				}
+				If isShiftDown
+				{
+					key := "Shift + " + key
+					keyfunction := keyfuncshift%A_Index%
+				}
+				If isAltDown
+				{
+					key := "Alt + " + key
+					keyfunction := keyfuncalt%A_Index%
+				}
+				If isCtrlDown
+				{
+					key := "Ctrl + " + key
+					keyfunction := keyfuncctrl%A_Index%
+				}
+				DisplayText(key, keyfunction)
 			}
 			SetTransparency(255)
 			lastdowntime := A_Now
@@ -170,14 +275,33 @@ Loop {
 			If repeat = 1
 			{
 				lastdown =
-				SetTransparency(150)
+				SetTransparency(120)
 			}
+			isCtrlUpNow := key = "Ctrl"
+			isAltUpNow := key = "Alt"
+			isWinUpNow := key = "LWin" or key = "RWin"
+			isShiftUpNow := key = "Shift"
+			
+			If isCtrlUpNow
+				isCtrlDown = 0
+			If isAltUpNow
+				isAltDown = 0
+			If isWinUpNow
+				isWinDown = 0
+			If isShiftUpNow
+				isShiftDown = 0
 		}
 	}
 	timenow := A_Now
 	EnvSub, timenow, lastdowntime, seconds
-	If(timenow > 2) {
-		SetTransparency(50)
+	If(timenow > 1) {
+		transparencytop = 120
+		transparencyrange := transparencytop - 50
+		Loop, %transparencyrange% { ; Fancy fade effects wooo
+			Sleep, 1
+			SetTransparency(transparencytop - A_Index)
+		}
+		lastdowntime = 0
 	}
 }
 
