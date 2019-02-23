@@ -45,6 +45,8 @@ Z::Tippy("F24 Z")
 8::Tippy("F24 8")
 9::Tippy("F24 9")
 0::Tippy("F24 0")
+
+Space::Tippy("F24 Space")
 #If
 
 #If GetKeyState("F23")
@@ -77,6 +79,10 @@ X::Tippy("F23 X")
 Y::Tippy("F23 Y")
 Z::Tippy("F23 Z")
 
+^A::Tippy("F23 CtrlA")
+^+A::Tippy("F23 CtrlShiftA")
+^+!#A::Tippy("F23 CtrlShiftAltWinA")
+
 1::Tippy("F23 1")
 2::Tippy("F23 2")
 3::Tippy("F23 3")
@@ -87,4 +93,6 @@ Z::Tippy("F23 Z")
 8::Tippy("F23 8")
 9::Tippy("F23 9")
 0::Tippy("F23 0")
+
+Space::Tippy("F23 Space")
 #If
