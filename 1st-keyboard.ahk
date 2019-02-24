@@ -40,17 +40,24 @@ chromeProfiles := ["Default", "Profile 1"]
 
 pinyin := false
 
-Launch_Mail::
+Launch_Mail:: ; Toggle Pinyin Input
 ToggleVar("pinyin", pinyin)
 onoff := (pinyin = 1) ? "ON" : "OFF"
 Tippy("Pinyin " + onoff)
 return
-Launch_App2::Tippy("test", 5000)
+
+Browser_Back::Tippy("back")
+Browser_Forward::Tippy("forward")
+Browser_Refresh::Tippy("refresh")
+Browser_Stop::Tippy("stop")
+Browser_Search::Tippy("search")
+Browser_Favorites::Tippy("favorites")
+Browser_Home::Tippy("browser")
+Launch_App2::Tippy("calc")
 
 ~^Numpad7::SwitchVar(currentChromeProfile, nextChromeProfile, chromeProfiles, "currentChromeProfile", "nextChromeProfile")
 ~#Numpad7::ChromeOpen("")
-NumLock::
-return
+NumLock::return
 
 #If pinyin = 1
 :*:v0::ü

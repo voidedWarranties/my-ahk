@@ -9,10 +9,22 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 F24::return
 
 A::Tippy("F24 A")
+
 B::Tippy("F24 B")
 C::Tippy("F24 C")
 D::Tippy("F24 D")
-E::Tippy("F24 E")
+
+E:: ; Explorer
+IfWinNotExist, ahk_class CabinetWClass
+	Run, explorer.exe
+GroupAdd, explorers, ahk_class CabinetWClass
+if WinActive("ahk_exe explorer.exe")
+	GroupActivate, explorers, r
+else
+	WinActivate ahk_class CabinetWClass
+return
+^E::WinClose, ahk_group explorers
+
 F::Tippy("F24 F")
 G::Tippy("F24 G")
 H::Tippy("F24 H")
@@ -20,7 +32,14 @@ I::Tippy("F24 I")
 J::Tippy("F24 J")
 K::Tippy("F24 K")
 L::Tippy("F24 L")
-M::Tippy("F24 M")
+
+M:: ; Task Manager
+IfWinNotExist, ahk_class TaskManagerWindow
+	Run, taskmgr.exe
+else
+	WinActivate ahk_class TaskManagerWindow
+return
+
 N::Tippy("F24 N")
 O::Tippy("F24 O")
 P::Tippy("F24 P")
@@ -30,7 +49,15 @@ S::Tippy("F24 S")
 T::Tippy("F24 T")
 U::Tippy("F24 U")
 V::Tippy("F24 V")
-W::Tippy("F24 W")
+
+W:: ; Window Spy
+IfWinNotExist, ahk_exe AU3_Reveal.exe
+	Run, AU3_Reveal.exe
+Else
+	WinActivate, ahk_exe AU3_Reveal.exe
+return
+^W::WinClose, ahk_exe AU3_Reveal.exe
+
 X::Tippy("F24 X")
 Y::Tippy("F24 Y")
 Z::Tippy("F24 Z")

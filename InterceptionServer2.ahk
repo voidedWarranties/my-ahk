@@ -195,39 +195,6 @@ switch(case) {
 		ChromeOpen("about:blank")
 	return
 	
-	; Window Spy
-	1_11:
-		IfWinNotExist, ahk_exe AU3_Reveal.exe
-				Run, AU3_Reveal.exe
-		Else
-			WinActivate, ahk_exe AU3_Reveal.exe
-	return
-	c1_11:
-		WinClose, ahk_exe AU3_Reveal.exe
-	return
-	
-	; Explorer
-	1_12:
-		IfWinNotExist, ahk_class CabinetWClass
-			Run, explorer.exe
-		GroupAdd, explorers, ahk_class CabinetWClass
-		if WinActive("ahk_exe explorer.exe")
-			GroupActivate, explorers, r
-		else
-			WinActivate ahk_class CabinetWClass
-	return
-	c1_12:
-		WinClose, ahk_group explorers
-	return
-	
-	; Task Manager
-	1_32:
-		IfWinNotExist, ahk_class TaskManagerWindow
-			Run, taskmgr.exe
-		else
-			WinActivate ahk_class TaskManagerWindow
-	return
-	
 	; Chrome Canary
 	1_2e:
 		IfWinNotExist, ahk_class Chrome_WidgetWin_1 
