@@ -9,6 +9,8 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 F24::return
 
 A::Tippy("F24 A")
+^A::Tippy("F24 Ctrl A")
+^!+A::Tippy("F24 Ctrl Alt Shift A")
 
 B::Tippy("F24 B")
 C::Tippy("F24 C")
