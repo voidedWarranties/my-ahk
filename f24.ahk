@@ -5,18 +5,32 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance, force
 #include Tippy.ahk
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;     Config     ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+firstName := "Johnny"
+lastName := "Appleseed"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;     Functions     ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+DriveHelp(function) {
+	WinGetTitle, drivetitle, A
+	Send, !{/}%function%
+	Sleep, 300
+	ControlSend, Chrome_RenderWidgetHostHWND1, {Enter}, %drivetitle%
+}
+
+
 #If GetKeyState("F24")
 F24::return
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;     Program Toggling     ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-A::Tippy("F24 A")
-^A::Tippy("F24 Ctrl A")
-^!+A::Tippy("F24 Ctrl Alt Shift A")
-
-B::Tippy("F24 B")
-C::Tippy("F24 C")
-D::Tippy("F24 D")
-
-E:: ; Explorer
+P:: ; Explorer
 IfWinNotExist, ahk_class CabinetWClass
 	Run, explorer.exe
 GroupAdd, explorers, ahk_class CabinetWClass
@@ -25,57 +39,55 @@ if WinActive("ahk_exe explorer.exe")
 else
 	WinActivate ahk_class CabinetWClass
 return
-^E::WinClose, ahk_group explorers
++P::
+Run, explorer.exe
+return
+^P::WinClose, ahk_group explorers
 
-F::Tippy("F24 F")
-G::Tippy("F24 G")
-H::Tippy("F24 H")
-I::Tippy("F24 I")
-J::Tippy("F24 J")
-K::Tippy("F24 K")
-L::Tippy("F24 L")
-
-M:: ; Task Manager
+I:: ; Task Manager
 IfWinNotExist, ahk_class TaskManagerWindow
 	Run, taskmgr.exe
 else
 	WinActivate ahk_class TaskManagerWindow
 return
 
-N::Tippy("F24 N")
-O::Tippy("F24 O")
-P::Tippy("F24 P")
-Q::Tippy("F24 Q")
-R::Tippy("F24 R")
-S::Tippy("F24 S")
-T::Tippy("F24 T")
-U::Tippy("F24 U")
-V::Tippy("F24 V")
-
-W:: ; Window Spy
+O:: ; Window Spy
 IfWinNotExist, ahk_exe AU3_Reveal.exe
 	Run, AU3_Reveal.exe
 Else
 	WinActivate, ahk_exe AU3_Reveal.exe
 return
-^W::WinClose, ahk_exe AU3_Reveal.exe
+^O::WinClose, ahk_exe AU3_Reveal.exe
 
-X::Tippy("F24 X")
-Y::Tippy("F24 Y")
-Z::Tippy("F24 Z")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;     Google Drive     ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-1::Tippy("F24 1")
-2::Tippy("F24 2")
-3::Tippy("F24 3")
-4::Tippy("F24 4")
-5::Tippy("F24 5")
-6::Tippy("F24 6")
-7::Tippy("F24 7")
-8::Tippy("F24 8")
-9::Tippy("F24 9")
-0::Tippy("F24 0")
+Q::DriveHelp("editing mode")
++Q::DriveHelp("suggesting mode")
+^Q::DriveHelp("viewing mode")
 
-Space::Tippy("F24 Space")
+C::DriveHelp("comic sans ms") ; Dedicated Comic Sans button
+
+Z:: ; Have you ever needed to quickly convert your blank paper to MLA format?
+DriveHelp("line spacing double")
+DriveHelp("times new roman")
+DriveHelp("font size 12")
+SendRaw, %firstName% %lastName%`n
+SendRaw, Teacher`n
+SendRaw, Class`n
+SendRaw, 1 January 2019`n
+Sleep, 300
+Send, ^+{e} ; Center Align
+SendRaw, Title
+Sleep, 300
+Send, ^!{o}^!{h} ; Move to header
+DriveHelp("times new roman")
+DriveHelp("font size 12")
+Send, ^+{r} ; Right Align
+Send, %lastName%{Space} ; Send user's last name with a space
+DriveHelp("insert page number in header starting on the first page")
+return
 #If
 
 #If GetKeyState("F23")
