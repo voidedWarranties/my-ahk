@@ -7,6 +7,9 @@ if deviceID == '' then
 else lmc_device_set_name('MACROS', deviceID)
 end
 
+lmc.minimizeToTray = true
+lmc_minimize()
+
 local keymap = { -- Welp this is mostly useless
   [17] = 'ctrl',
   [18] = 'alt',

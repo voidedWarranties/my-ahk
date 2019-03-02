@@ -6,9 +6,34 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 #include Tippy.ahk
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;     Config     ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+firstName := "Johnny"
+lastName := "Appleseed"
+
 ToggleVar(name, value) {
 	%name% := not value
 }
+
+; https://www.reddit.com/r/AutoHotkey/comments/3fyudo/automatically_switch_between_windows_10_virtual/
+switchedDesktop := false
+switchDesktop() 
+{
+  global switchedDesktop
+	if switchedDesktop
+	{
+		SendEvent ^#{Right}
+		switchedDesktop := false
+	}
+	else
+	{
+		SendEvent ^#{Left}
+		switchedDesktop := true
+	}
+}
+
 
 SwitchVar(current, next, arr, currentname, nextname) {
 	nextProfile := arr[next]
@@ -57,7 +82,6 @@ Launch_App2::Tippy("calc")
 
 ~^Numpad7::SwitchVar(currentChromeProfile, nextChromeProfile, chromeProfiles, "currentChromeProfile", "nextChromeProfile")
 ~#Numpad7::ChromeOpen("")
-NumLock::return
 
 #If pinyin = 1
 :*:v0::ü
@@ -90,13 +114,6 @@ NumLock::return
 :*:u4::ù
 :*:v4::ǜ
 #If
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;     Config     ;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-firstName := "Johnny"
-lastName := "Appleseed"
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;     Functions     ;;;;;
@@ -174,6 +191,8 @@ Send, ^+{r} ; Right Align
 Send, %lastName%{Space} ; Send user's last name with a space
 DriveHelp("insert page number in header starting on the first page")
 return
+
+D::switchDesktop()
 #If
 
 #If GetKeyState("F23")
